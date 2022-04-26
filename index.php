@@ -91,7 +91,7 @@ session_start();
                 $email = 'email';
                 $regisztracio_datuma = 'regisztracio_datuma';
 
-                $query = "UPDATE users SET name='$nev', email='$email',created_at='$regisztracio_datuma' ";
+                $query = "DELETE FROM users WHERE id=$id";
                 $query_run = mysqli_query($connection, $query);
 
                 if($query_run){
@@ -126,7 +126,7 @@ session_start();
                              
                              '<div class="p-2 d-flex justify-content-around">
                              <button type="submit" name="szerkesztes" class="btn btn-success">szerkesztés</button>
-                             <button type="submit" name="torles" class="btn btn-danger" >törlés</button>
+                             <a href="torles.php?id=<?php print $sor["id"] ?> <button type="submit" name="torles" class="btn btn-danger">törlés</button></a>
                              </div>'
                              . '</div>';
                     }

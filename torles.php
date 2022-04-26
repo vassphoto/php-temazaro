@@ -11,10 +11,12 @@
 
         if($query_run){
              $_SESSION['status'] = "Sikeresen törölve!";
+             header ("Location: index.php");
         }
                 
         else{
             $_SESSION['status'] = "Sikertelen törlés!";
+            header ("Location: index.php");
             }
 
             }
