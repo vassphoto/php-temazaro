@@ -54,11 +54,17 @@ session_start();
             <div class="row row-cols-4">
 
             <?php
+
+            $adatok = $_GET;
+
+            extract($adatok);
             // szerkesztés és törlés gombok
 
             //szerkesztés
             
             if( isset($szerkesztes)){
+                header("Location: szerkesztes.php");
+                exit;
                 $nev = 'nev';
                 $email = 'email';
                 $regisztracio_datuma = 'regisztracio_datuma';
@@ -81,6 +87,20 @@ session_start();
 
             //törlés
             if( isset($torles)){
+                $nev = 'nev';
+                $email = 'email';
+                $regisztracio_datuma = 'regisztracio_datuma';
+
+                $query = "UPDATE users SET name='$nev', email='$email',created_at='$regisztracio_datuma' ";
+                $query_run = mysqli_query($connection, $query);
+
+                if($query_run){
+                    $_SESSION['status'] = "Sikeresen törölve!";
+                }
+                
+                else{
+                    $_SESSION['status'] = "Sikertelen törlés!";
+                }
 
                 }
 
