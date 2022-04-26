@@ -125,8 +125,8 @@ session_start();
                              '</div><div class="col border border-dark text-center">' . 
                              
                              '<div class="p-2 d-flex justify-content-around">
-                             <a href="szerkesztes.php?id=<?php print $sor["id"] ?><button type="submit" name="szerkesztes" class="btn btn-success">szerkesztés</button></a>
-                             <a href="torles.php?id=<?php print $sor["id"] ?><button type="submit" name="torles" class="btn btn-danger">törlés</button></a>
+                             <a href="szerkesztes.php?id=<?php echo $_GET["name"].$_GET["email"].$_GET["created_at"]; ?><button type="submit" name="szerkesztes" class="btn btn-success">szerkesztés</button></a>
+                             <a href="torles.php?id=<?php echo $_GET["name"].$_GET["email"].$_GET["created_at"]; ?><button type="submit" name="torles" class="btn btn-danger">törlés</button></a>
                              </div>'
                              . '</div>';
                     }
