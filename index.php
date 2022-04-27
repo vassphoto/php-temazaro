@@ -118,15 +118,15 @@ session_start();
                             <div class="p-2 col border border-dark text-white bg-dark text-center">Művelet</div>';
 
                     // Sorok feltöltése tartalommal
-                    while ($row = $result->fetch_assoc()) {
+                    while ($row = mysqli_fetch_array($result)) {
                         echo '<div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="nev">' . $row["name"] . 
                              '</div><div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="email">' . $row["email"] . 
                              '</div><div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="regisztracio_datuma">' . $row["created_at"] . 
                              '</div><div class="col border border-dark text-center">' . 
                              
                              '<div class="p-2 d-flex justify-content-around">
-                             <a href="szerkesztes.php?id=<?php echo $id;?>"><button type="submit" name="szerkesztes" class="btn btn-success">szerkesztés</button></a>
-                             <a href="torles.php?id=<?php echo $id;?>"><button type="submit" name="torles" class="btn btn-danger">törlés</button></a>
+                             <a href="szerkesztes.php?id=<?php echo $id;?>"><button type="submit" name="szerkesztes" method="get" class="btn btn-success">szerkesztés</button></a>
+                             <a href="torles.php?id=$row[id]"><button type="submit" name="torles" method="get" class="btn btn-danger">törlés</button></a>
                              </div>'
                              . '</div>';
                     }

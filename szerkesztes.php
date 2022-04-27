@@ -36,15 +36,45 @@ session_start();
         echo $error;
     }
 
-    if (isset($_POST["mentes"])) {
+    $adatok = $_GET;
 
-        $length = strlen($_POST["name"]);
+    extract($adatok);
+    // szerkesztés és törlés gombok
+
+    //szerkesztés
+    
+    if( isset($szerkesztes)){
+        header("Location: szerkesztes.php");
+        exit;
+        $nev = 'nev';
+        $email = 'email';
+        $regisztracio_datuma = 'regisztracio_datuma';
+
+        $query = "UPDATE users SET name='$nev', email='$email',created_at='$regisztracio_datuma' ";
+        $query_run = mysqli_query($connection, $query);
+
+        if($query_run){
+            $_SESSION['status'] = "Sikeresen szerkesztve!";
+            header("location: szerkesztes.php");
+        }
+        
+        else{
+            $_SESSION['status'] = "Sikertelen szerkesztés!";
+            header("location: szerkesztes.php");
+        }
+
+
+        }       
+
+    if (isset($_GET["mentes"])) {
+
+        $length = strlen($_GET["name"]);
 
     if (count($errors) === 0) {
         //update
         mysqli_query($connection, "update users set
-                                                name = '" . $_POST["name"] . "', 
-                                                email = '" . $_POST["email"] . "', 
+                                                name = '" . $_GET["name"] . "', 
+                                                email = '" . $_GET["email"] . "', 
                                                 ");
         echo mysqli_error($connection);
 
@@ -65,10 +95,10 @@ session_start();
 
             <?php
 
-            if($isset($_SESSION['status'])){
-                echo "<h4>".$_SESSION['status']."</h4>";
-                unset($_SESSION['status']);
-            }
+            // if($isset($_SESSION['status'])){
+            //     echo "<h4>".$_SESSION['status']."</h4>";
+            //     unset($_SESSION['status']);
+            // }
 
             echo '<div class="d-flex align-items-center flex-column">';
 
@@ -83,7 +113,7 @@ session_start();
                                 <input type="email" class="form-control" id="email" name="email">
                             </div>
                              
-                             <button type="submit" name="mentes" class="col-3 btn btn-success">Mentés</button>';
+                             <button type="submit" name="mentes" method="get" class="col-3 btn btn-success">Mentés</button>';
 
             echo '</div>';
             ?>
