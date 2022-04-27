@@ -1,24 +1,34 @@
 <?php
 
     //törlés
-    if( isset($torles)){
-        $nev = 'nev';
-        $email = 'email';
-        $regisztracio_datuma = 'regisztracio_datuma';
+    if( isset($_GET['torles'])){
 
-        $query = "DELETE FROM users WHERE id=$id";
-        $query_run = mysqli_query($connection, $query);
+        // Kapcsolódás adatbázishoz
+        $connection = mysqli_connect("localhost:3306", "root", "", "phpfeladat");
+        mysqli_set_charset($connection, "utf8mb4");
 
-        if($query_run){
-             $_SESSION['status'] = "Sikeresen törölve!";
-             header ("Location: index.php");
+        $errors = [];
+
+        // Kapcsolódási hiba ellenőrzése
+        $error = mysqli_error($connection);
+
+        if ($error) {
+            echo $error;
         }
-                
-        else{
-            $_SESSION['status'] = "Sikertelen törlés!";
-            header ("Location: index.php");
-            }
 
-            }
+        $id = $_GET['ID'];
+
+        // Sorok kiválasztása az users táblából
+        $query = "DELETE FROM users WHERE id =$id;"
+        $torles = mysqli_query($connection, $query);
+
+        if($torles)
+        {
+            echo 'Sikeres törlés!';
+        }else{
+            echo 'Sikertelen törlés!';
+        }
+        mysqli_close($connection);
+    }
 
 ?>
