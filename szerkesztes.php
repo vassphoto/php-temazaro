@@ -1,7 +1,3 @@
-<?php 
-session_start();
-?>
-
 <!doctype html>
 <html lang="en">
 
@@ -69,12 +65,16 @@ session_start();
     if (isset($_GET["mentes"])) {
 
         $length = strlen($_GET["name"]);
+        $id = $_GET['id'];
+        $name = $_GET['nev'];
+        $email = $_GET['email'];
 
     if (count($errors) === 0) {
         //update
-        mysqli_query($connection, "update users set
-                                                name = '" . $_GET["name"] . "', 
+        mysqli_query($connection, "update users set content
+                                                name = '" . $_GET["nev"] . "', 
                                                 email = '" . $_GET["email"] . "', 
+                                                WHERE id = $id
                                                 ");
         echo mysqli_error($connection);
 
@@ -105,12 +105,12 @@ session_start();
                       // User adatok megjelenítése és szerkesztése
             echo            '<div class="col-3 p-2">
                                 <label for="nev" class="form-label">Név</label>
-                                <input type="text" class="form-control" id="nev" name="nev">
+                                <input type="text" class="form-control" id="nev" name="nev" method="get">
                             </div>
                             
                             <div class="col-3 p-2">
                                 <label for="email" class="form-label">E-mail</label>
-                                <input type="email" class="form-control" id="email" name="email">
+                                <input type="email" class="form-control" id="email" name="email" method="get">
                             </div>
                              
                              <button type="submit" name="mentes" method="get" class="col-3 btn btn-success">Mentés</button>';
