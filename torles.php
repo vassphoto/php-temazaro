@@ -19,7 +19,7 @@
         $id = $_GET['ID'];
 
         // Sorok kiválasztása az users táblából
-        $query = "DELETE FROM users WHERE id =$id;"
+        $query = "DELETE FROM users WHERE id =$id";
         $torles = mysqli_query($connection, $query);
 
         if($torles)
