@@ -67,7 +67,6 @@
     $result = $connection->query($sql);
     $user = mysqli_fetch_assoc($result);
 
-
     ?>
 
     <!-- Táblázat létrehozása Bootstrap-el kezdete -->
