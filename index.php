@@ -23,93 +23,25 @@ session_start();
     $connection = mysqli_connect("localhost:3306", "root", "", "phpfeladat");
     mysqli_set_charset($connection, "utf8mb4");
 
-    // Sorok kiválasztása az users táblából
-    $sql = "SELECT name, email, created_at FROM users";
-    $result = $connection->query($sql);
-
     // Kapcsolódási hiba ellenőrzése
     $error = mysqli_error($connection);
 
     if ($error) {
         echo $error;
     }
-
-    // // Táblázat létrehozása
-    // if ($result->num_rows > 0) {
-    //     echo "<table><tr><th>Név</th><th>E-mail</th><th>Regisztráció dátuma</th><th>Művelet</th></tr>";
-    //     // Sorok feltöltése tartalommal
-    //     while ($row = $result->fetch_assoc()) {
-    //         echo "<tr><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["created_at"] . "</td><td>" . $row["name"] . "</td></tr>";
-    //     }
-    //     echo "</table>";
-    // } else {
-    //     echo "Nincs találat!";
-    // }
-
+ 
     ?>
 
     <!-- Táblázat létrehozása Bootstrap-el kezdete -->
 
         <div class="container">
             <div class="row row-cols-4">
-
-            <?php
-
-            $adatok = $_GET;
-
-            extract($adatok);
-            // szerkesztés és törlés gombok
-
-            //szerkesztés
-            
-            if( isset($szerkesztes)){
-                header("Location: szerkesztes.php");
-                exit;
-                $nev = 'nev';
-                $email = 'email';
-                $regisztracio_datuma = 'regisztracio_datuma';
-
-                $query = "UPDATE users SET name='$nev', email='$email',created_at='$regisztracio_datuma' ";
-                $query_run = mysqli_query($connection, $query);
-
-                if($query_run){
-                    $_SESSION['status'] = "Sikeresen szerkesztve!";
-                    header("location: szerkesztes.php");
-                }
-                
-                else{
-                    $_SESSION['status'] = "Sikertelen szerkesztés!";
-                    header("location: szerkesztes.php");
-                }
-
-
-                }       
-
-            //törlés
-            if( isset($torles)){
-                $nev = 'nev';
-                $email = 'email';
-                $regisztracio_datuma = 'regisztracio_datuma';
-
-                $query = "DELETE FROM users WHERE id=$id";
-                $query_run = mysqli_query($connection, $query);
-
-                if($query_run){
-                    $_SESSION['status'] = "Sikeresen törölve!";
-                }
-                
-                else{
-                    $_SESSION['status'] = "Sikertelen törlés!";
-                }
-
-                }
-
-            ?>
-            
+ 
             <h2 class="col-12 text-center">Userek listázása</h2>
 
                 <?php
-
+                $sql = "SELECT id, name, email, created_at FROM users";
+                $result = $connection->query($sql);
                 // Táblázat létrehozása
                 if ($result->num_rows > 0) {
                     echo    '<div class="p-2 col border border-dark text-white bg-dark text-center">Név</div>
@@ -118,15 +50,20 @@ session_start();
                             <div class="p-2 col border border-dark text-white bg-dark text-center">Művelet</div>';
 
                     // Sorok feltöltése tartalommal
-                    while ($row = mysqli_fetch_array($result)) {
+                    while ($row = $result->fetch_assoc()) {
                         echo '<div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="nev">' . $row["name"] . 
                              '</div><div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="email">' . $row["email"] . 
                              '</div><div class="d-flex flex-column justify-content-center align-items-center border border-dark text-center" name="regisztracio_datuma">' . $row["created_at"] . 
                              '</div><div class="col border border-dark text-center">' . 
                              
                              '<div class="p-2 d-flex justify-content-around">
-                             <a href="szerkesztes.php?id=<?php echo $id;?>"><button type="submit" name="szerkesztes" method="get" class="btn btn-success">szerkesztés</button></a>
-                             <a href="torles.php?id=$row[id]"><button type="submit" name="torles" method="get" class="btn btn-danger">törlés</button></a>
+                             
+                             <a class="btn btn-success" href="szerkesztes.php?id=' . $row["id"] . 
+                             '"> szerkesztés </a>
+
+                             <a  class="btn btn-danger" href="torles.php?id=' . $row["id"] . 
+                             '"> törlés </a>
+                             
                              </div>'
                              . '</div>';
                     }

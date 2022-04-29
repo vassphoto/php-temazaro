@@ -1,7 +1,7 @@
 <?php
 
     //törlés
-    if( isset($_GET['torles'])){
+    
 
         // Kapcsolódás adatbázishoz
         $connection = mysqli_connect("localhost:3306", "root", "", "phpfeladat");
@@ -16,19 +16,19 @@
             echo $error;
         }
 
-        $id = $_GET['ID'];
-
         // Sorok kiválasztása az users táblából
-        $query = "DELETE FROM users WHERE id =$id";
+        $query = "DELETE FROM users WHERE id ='".$_GET['id']."' ";
         $torles = mysqli_query($connection, $query);
 
         if($torles)
         {
-            echo 'Sikeres törlés!';
+            // echo 'Sikeres törlés!';
+            header("Location: index.php");
         }else{
-            echo 'Sikertelen törlés!';
+            // echo 'Sikertelen törlés!';
+            header("Location: index.php");
         }
         mysqli_close($connection);
-    }
+
 
 ?>

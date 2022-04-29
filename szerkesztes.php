@@ -15,15 +15,14 @@
 <body>
 
     <?php
+    //include("connect.php");
     // Kapcsolódás adatbázishoz
     $connection = mysqli_connect("localhost:3306", "root", "", "phpfeladat");
     mysqli_set_charset($connection, "utf8mb4");
 
     $errors = [];
 
-    // Sorok kiválasztása az users táblából
-    $sql = "SELECT name, email, created_at FROM users";
-    $result = $connection->query($sql);
+
 
     // Kapcsolódási hiba ellenőrzése
     $error = mysqli_error($connection);
@@ -33,56 +32,41 @@
     }
 
     $adatok = $_GET;
-
+    // $_GET["id"]  ---> $id
     extract($adatok);
     // szerkesztés és törlés gombok
 
-    //szerkesztés
-    
-    if( isset($szerkesztes)){
-        header("Location: szerkesztes.php");
-        exit;
-        $nev = 'nev';
-        $email = 'email';
-        $regisztracio_datuma = 'regisztracio_datuma';
-
-        $query = "UPDATE users SET name='$nev', email='$email',created_at='$regisztracio_datuma' ";
-        $query_run = mysqli_query($connection, $query);
-
-        if($query_run){
-            $_SESSION['status'] = "Sikeresen szerkesztve!";
-            header("location: szerkesztes.php");
-        }
-        
-        else{
-            $_SESSION['status'] = "Sikertelen szerkesztés!";
-            header("location: szerkesztes.php");
-        }
 
 
-        }       
 
-    if (isset($_GET["mentes"])) {
 
-        $length = strlen($_GET["name"]);
-        $id = $_GET['id'];
-        $name = $_GET['nev'];
-        $email = $_GET['email'];
+    if (isset($_POST["mentes"])) {
 
-    if (count($errors) === 0) {
-        //update
-        mysqli_query($connection, "update users set content
-                                                name = '" . $_GET["nev"] . "', 
-                                                email = '" . $_GET["email"] . "', 
+        $length = strlen($_POST["nev"]);
+        $name = $_POST['nev'];
+        $email = $_POST['email'];
+
+        if (count($errors) === 0 || 1) {
+            //update
+            mysqli_query($connection, "update users set  
+                                                name = '" . $_POST["nev"] . "', 
+                                                email = '" . $_POST["email"] . "' 
                                                 WHERE id = $id
                                                 ");
-        echo mysqli_error($connection);
+            echo mysqli_error($connection);
 
-        echo '<div class="alert alert-success col-md-8 col-lg-6 mx auto" role="alert">
+            echo '<div class="alert alert-success col-md-8 col-lg-6 mx-auto" role="alert">
         Sikeres adatmódosítás!
       </div>';
         }
     }
+
+    //szerkesztés
+    // Sorok kiválasztása az users táblából
+    $sql = "SELECT name, email, created_at FROM  users where id='$id'";
+    $result = $connection->query($sql);
+    $user = mysqli_fetch_assoc($result);
+
 
     ?>
 
@@ -92,32 +76,33 @@
         <div class="row">
 
             <h2 class="col-12 text-center">User szerkesztése</h2>
+            <form action="" method="post">
+                <?php
 
-            <?php
+                // if($isset($_SESSION['status'])){
+                //     echo "<h4>".$_SESSION['status']."</h4>";
+                //     unset($_SESSION['status']);
+                // }
 
-            // if($isset($_SESSION['status'])){
-            //     echo "<h4>".$_SESSION['status']."</h4>";
-            //     unset($_SESSION['status']);
-            // }
+                echo '<div class="d-flex align-items-center flex-column">';
 
-            echo '<div class="d-flex align-items-center flex-column">';
-
-                      // User adatok megjelenítése és szerkesztése
-            echo            '<div class="col-3 p-2">
+                // User adatok megjelenítése és szerkesztése
+                echo            '<div class="col-3 p-2">
                                 <label for="nev" class="form-label">Név</label>
-                                <input type="text" class="form-control" id="nev" name="nev" method="get">
+                                <input type="text" class="form-control" id="nev" name="nev" value="' . $user["name"] . '">
                             </div>
                             
                             <div class="col-3 p-2">
                                 <label for="email" class="form-label">E-mail</label>
-                                <input type="email" class="form-control" id="email" name="email" method="get">
+                                <input type="email" class="form-control" id="email" name="email"  value="' . $user["email"] . '">
                             </div>
-                             
+
                              <button type="submit" name="mentes" method="get" class="col-3 btn btn-success">Mentés</button>';
+                             echo '<br> <a href="index.php">Vissza az userekhez</a>';
+                echo '</div>';
+                ?>
 
-            echo '</div>';
-            ?>
-
+            </form>
         </div>
     </div>
     <!-- Táblázat létrehozása Bootstrap-el vége -->
